@@ -9,6 +9,7 @@ type UsersStore = {
 
     setFilter: <K extends keyof Filters>(key: K, value: Filters[K]) => void;
     clearFilter: (key: keyof Filters) => void;
+    addUser: (user: User) => void;
 };
 
 const applyFilters = (users: typeof Users, filters: Filters) => {
@@ -67,6 +68,17 @@ export const useUsersStore = create<UsersStore>((set, get) => ({
             filteredUsers: applyFilters(users, newFilters),
         });
     },
+    addUser: (user: User) => {
+        const { users, filters } = get();
+
+        const newUsers = [user, ...users];
+
+        set({
+            users: newUsers,
+            filteredUsers: applyFilters(newUsers, filters),
+        });
+    }
+
 
 }));
 
