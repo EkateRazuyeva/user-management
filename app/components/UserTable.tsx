@@ -14,7 +14,7 @@ import {SkeletonTable} from '@/app/components/SkeletonTable';
 import {EmptyState} from '@/app/components/EmptyState';
 
 export const UserTable = () => {
-    const users = useUsersStore((state) => state.users);
+    const { filteredUsers: users } = useUsersStore();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {

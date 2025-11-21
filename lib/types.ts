@@ -10,3 +10,10 @@ export type User = {
         city: string;
     };
 };
+
+export enum Search {
+    Email = 'email',
+    Name = 'name',
+}
+
+export type Filters = Record<Search, string>;
