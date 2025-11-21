@@ -21,7 +21,7 @@ import {toast} from 'sonner';
 export const fields = ['name', 'email', 'phone', 'city', 'company'] as const;
 export type UserForm = Record<typeof fields[number], string>;
 
-const userSchema = z.object({
+export const userSchema = z.object({
     name: z.string().min(1, 'Имя обязательно'),
     email: z.string()
         .email()
@@ -32,7 +32,7 @@ const userSchema = z.object({
 
     phone: z.string()
         .min(1, 'Телефон обязателен')
-        .regex(/^\d{7,}$/, 'Телефон должен содержать минимум 7 цифр'),
+        .regex(/^\+?[\d\s()-]{7,}$/, 'Телефон должен содержать минимум 7 цифр'),
     city: z.string().min(1, 'Город обязателен'),
     company: z.string().min(1, 'Компания обязательна'),
 });

@@ -12,10 +12,13 @@ import {clsx} from 'clsx';
 import {useEffect, useState} from 'react';
 import {SkeletonTable} from '@/app/components/SkeletonTable';
 import {EmptyState} from '@/app/components/EmptyState';
+import {EditUserModal} from '@/app/components/EditUserModal';
+import {User} from '@/lib/types';
 
 export const UserTable = () => {
     const { filteredUsers: users } = useUsersStore();
     const [loading, setLoading] = useState(true);
+    const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
     useEffect(() => {
         const timer = setTimeout(() => setLoading(false), 500);
@@ -49,7 +52,7 @@ export const UserTable = () => {
                 </TableHeader>
                 <TableBody>
                     {users.map((user) => (
-                        <TableRow key={user.id} className={rowClass}>
+                        <TableRow key={user.id} className={rowClass} onClick={() => setSelectedUser(user)}>
                             <TableCell className={`font-medium ${baseCellClass}`}>{user.name}</TableCell>
                             <TableCell className={baseCellClass}>{user.email}</TableCell>
                             <TableCell className={baseCellClass}>{user.phone}</TableCell>
@@ -66,6 +69,13 @@ export const UserTable = () => {
                     </TableRow>
                 </TableFooter>
             </Table>
+            {selectedUser && (
+                <EditUserModal
+                    user={selectedUser}
+                    onClose={() => setSelectedUser(null)}
+                />
+            )}
+
         </div>
     )
 };
