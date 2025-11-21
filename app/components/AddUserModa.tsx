@@ -46,20 +46,24 @@ export const AddUserModal = () => {
 
     const {users, addUser} = useUsersStore();
     const onSubmit = (data: UserForm) => {
+        try {
+            const newUser = {
+                id: users.length ? users[users.length - 1].id + 1 : 1,
+                name: data.name,
+                email: data.email,
+                phone: data.phone,
+                address: {city: data.city},
+                company: {name: data.company}
+            };
+            addUser(newUser);
 
-        const newUser = {
-            id: users.length ? users[users.length - 1].id + 1 : 1,
-            name: data.name,
-            email: data.email,
-            phone: data.phone,
-            address: {city: data.city},
-            company: {name: data.company}
-        };
-        addUser(newUser);
+            reset();
+            setOpen(false);
+            toast.success('Пользователь успешно добавлен');
+        } catch (error) {
+            toast.error(`Ошибка при добавлении: ${error}`);
+        }
 
-        reset();
-        setOpen(false);
-        toast.success("Пользователь успешно добавлен");
     };
 
     console.log()

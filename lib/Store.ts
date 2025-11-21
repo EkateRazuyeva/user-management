@@ -71,7 +71,7 @@ export const useUsersStore = create<UsersStore>((set, get) => ({
         });
     },
     addUser: (user: User) => {
-        const { users, filters } = get();
+        const {users, filters} = get();
 
         const newUsers = [user, ...users];
 
@@ -81,7 +81,13 @@ export const useUsersStore = create<UsersStore>((set, get) => ({
         });
     },
     updateUser: (updatedUser: User) => {
-        const { users, filters } = get();
+        const {users, filters} = get();
+        const exists = users.find(u => u.id === updatedUser.id);
+
+        if (!exists) {
+            throw new Error('User not found');
+        }
+
         const newUsers = users.map(u => u.id === updatedUser.id ? updatedUser : u);
         set({
             users: newUsers,
@@ -89,6 +95,13 @@ export const useUsersStore = create<UsersStore>((set, get) => ({
         });
     },
     deleteUser: (id: number) => {
+        const {users} = get();
+        const exists = users.find(u => u.id === id);
+
+        if (!exists) {
+            throw new Error('User not found');
+        }
+
         set((state) => ({
             users: state.users.filter(u => u.id !== id),
             filteredUsers: state.filteredUsers.filter(u => u.id !== id),

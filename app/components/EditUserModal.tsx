@@ -37,18 +37,23 @@ export const EditUserModal = ({user, onClose}: EditUserModalProps) => {
     const {updateUser} = useUsersStore();
 
     const onSubmit = (data: UserForm) => {
-        const updatedUser = {
-            ...user,
-            name: data.name,
-            email: data.email,
-            phone: data.phone,
-            address: {city: data.city},
-            company: {name: data.company},
-        };
-        reset(data)
-        updateUser(updatedUser);
-        onClose();
-        toast.success('Пользователь успешно обновлён');
+        try{
+            const updatedUser = {
+                ...user,
+                name: data.name,
+                email: data.email,
+                phone: data.phone,
+                address: {city: data.city},
+                company: {name: data.company},
+            };
+            reset(data)
+            updateUser(updatedUser);
+            onClose();
+            toast.success('Пользователь успешно обновлён');
+        } catch (error) {
+            toast.error(`Ошибка при обновлении: ${error}`);
+        }
+
     };
 
     return (

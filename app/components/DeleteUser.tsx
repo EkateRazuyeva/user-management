@@ -22,9 +22,14 @@ export const DeleteUserButton = ({ userId }: Props) => {
     const [open, setOpen] = useState(false);
 
     const handleDelete = () => {
-        deleteUser(userId);
-        setOpen(false);
-        toast.success('Пользователь успешно удалён');
+        try{
+            deleteUser(userId);
+            setOpen(false);
+            toast.success('Пользователь успешно удалён');
+        } catch (error) {
+            toast.error(`Ошибка при удалении: ${error}`);
+        }
+
     };
 
     return (
