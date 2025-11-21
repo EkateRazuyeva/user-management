@@ -9,9 +9,9 @@ export const CitySelect = () => {
     const [value, setValue] = useState(filters.city);
     const uniqueCities = Array.from(new Set(users.map(user => user.address.city)));
 
-    const ChangeValueHandler = (value: string) => {
-        setValue(value);
-        setFilter('city', value)
+    const ChangeValueHandler = (val: string) => {
+        setValue(val === "all" ? "" : val);
+        setFilter('city', val === "all" ? "" : val);
     }
 
     return (
@@ -26,6 +26,7 @@ export const CitySelect = () => {
                     />
                 </SelectTrigger>
                 <SelectContent>
+                    <SelectItem value="all">Все города</SelectItem>
                     {uniqueCities.map(city => (
                         <SelectItem key={city} value={city}>
                             {city}

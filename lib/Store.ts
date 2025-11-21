@@ -7,7 +7,7 @@ type UsersStore = {
     filteredUsers: User[];
     filters: Filters;
 
-    setFilter: (key: keyof Filters, value: string) => void;
+    setFilter: <K extends keyof Filters>(key: K, value: Filters[K]) => void;
     clearFilter: (key: keyof Filters) => void;
 };
 
