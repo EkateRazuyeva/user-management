@@ -16,4 +16,7 @@ export enum Search {
     Name = 'name',
 }
 
-export type Filters = Record<Search, string>;
+export type Filters = Record<Search, string> & {
+    city: string;
+    companies: string[];
+};

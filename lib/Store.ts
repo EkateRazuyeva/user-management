@@ -21,7 +21,13 @@ const applyFilters = (users: typeof Users, filters: Filters) => {
             .toLowerCase()
             .includes(filters.email);
 
-        return matchName && matchEmail;
+        const matchCity = filters.city ? user.address.city === filters.city : true;
+        const matchCompanies = filters.companies.length
+            ? filters.companies.includes(user.company.name)
+            : true;
+
+        return matchName && matchEmail && matchCity && matchCompanies;
+
     });
 };
 
@@ -31,6 +37,8 @@ export const useUsersStore = create<UsersStore>((set, get) => ({
     filters: {
         name: '',
         email: '',
+        city: '',
+        companies: []
     },
 
     setFilter: (key, value) => {
@@ -47,6 +55,12 @@ export const useUsersStore = create<UsersStore>((set, get) => ({
         const {filters, users} = get();
 
         const newFilters = {...filters, [key]: ''};
+
+        if (key === 'companies') {
+            newFilters.companies = [];
+        } else {
+            newFilters[key] = '';
+        }
 
         set({
             filters: newFilters,

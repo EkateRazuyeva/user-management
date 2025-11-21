@@ -29,7 +29,7 @@ export const SearchInput = ({kind}: Props) => {
     }
 
     return (
-        <div className="flex w-full max-w-sm items-end gap-1 py-2 px-3">
+        <div className="flex w-full max-w-sm items-end gap-1 px-3">
             <div className="relative grid w-full max-w-sm items-center gap-3">
                 <Label htmlFor="email">Поиск по {kind}</Label>
                 <Input type={kind === Search.Email ? 'email' : 'text'}
