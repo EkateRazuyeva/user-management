@@ -14,6 +14,7 @@ type UsersStore = {
     addUser: (user: User) => void;
     updateUser: (user: User) => void;
     deleteUser: (id: number) => void;
+    clearAllFilters: () => void;
 };
 
 const applyFilters = (users: typeof Users, filters: Filters) => {
@@ -114,7 +115,24 @@ export const useUsersStore = create<UsersStore>((set, get) => ({
             users: state.users.filter(u => u.id !== id),
             filteredUsers: state.filteredUsers.filter(u => u.id !== id),
         }));
-    }
+    },
+    clearAllFilters: () => {
+        const { users } = get();
+
+        const emptyFilters: Filters = {
+            name: '',
+            email: '',
+            city: '',
+            companies: []
+        };
+
+        set({
+            filters: emptyFilters,
+            filteredUsers: users,
+            currentPage: 1,
+        });
+    },
+
 }));
 
 
