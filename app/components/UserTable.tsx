@@ -14,6 +14,7 @@ import {SkeletonTable} from '@/app/components/SkeletonTable';
 import {EmptyState} from '@/app/components/EmptyState';
 import {EditUserModal} from '@/app/components/EditUserModal';
 import {User} from '@/lib/types';
+import {DeleteUserButton} from '@/app/components/DeleteUser';
 
 export const UserTable = () => {
     const { filteredUsers: users } = useUsersStore();
@@ -40,7 +41,7 @@ export const UserTable = () => {
 
     return (
         <div className="overflow-x-auto">
-            <Table className="min-w-[700px] max-w-5xl mx-auto border border-purple-300">
+            <Table className="min-w-[700px] max-w-5xl mx-auto">
                 <TableHeader>
                     <TableRow>
                         {tableHeaders.map((header) => (
@@ -52,12 +53,20 @@ export const UserTable = () => {
                 </TableHeader>
                 <TableBody>
                     {users.map((user) => (
-                        <TableRow key={user.id} className={rowClass} onClick={() => setSelectedUser(user)}>
+                        <TableRow key={user.id} className={rowClass}
+                                  onClick={(e) => {
+                                      if ((e.target as HTMLElement).closest('button')) return;
+                                      setSelectedUser(user);
+                                  }}
+                        >
                             <TableCell className={`font-medium ${baseCellClass}`}>{user.name}</TableCell>
                             <TableCell className={baseCellClass}>{user.email}</TableCell>
                             <TableCell className={baseCellClass}>{user.phone}</TableCell>
                             <TableCell className={baseCellClass}>{user.company.name}</TableCell>
                             <TableCell className={baseCellClass}>{user.address.city}</TableCell>
+                            <TableCell>
+                                <DeleteUserButton userId={user.id}/>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
