@@ -6,6 +6,8 @@ type UsersStore = {
     users: User[];
     filteredUsers: User[];
     filters: Filters;
+    currentPage: number;
+    setCurrentPage: (page: number) => void;
 
     setFilter: <K extends keyof Filters>(key: K, value: Filters[K]) => void;
     clearFilter: (key: keyof Filters) => void;
@@ -43,6 +45,8 @@ export const useUsersStore = create<UsersStore>((set, get) => ({
         city: '',
         companies: []
     },
+    currentPage: 1,
+    setCurrentPage: (page) => set({ currentPage: page }),
 
     setFilter: (key, value) => {
         const {users, filters} = get();
@@ -51,7 +55,9 @@ export const useUsersStore = create<UsersStore>((set, get) => ({
         set({
             filters: newFilters,
             filteredUsers: applyFilters(users, newFilters),
+            currentPage: 1,
         });
+
     },
 
     clearFilter: (key) => {
@@ -68,6 +74,7 @@ export const useUsersStore = create<UsersStore>((set, get) => ({
         set({
             filters: newFilters,
             filteredUsers: applyFilters(users, newFilters),
+            currentPage: 1,
         });
     },
     addUser: (user: User) => {
@@ -78,6 +85,7 @@ export const useUsersStore = create<UsersStore>((set, get) => ({
         set({
             users: newUsers,
             filteredUsers: applyFilters(newUsers, filters),
+            currentPage: 1,
         });
     },
     updateUser: (updatedUser: User) => {

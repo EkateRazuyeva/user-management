@@ -15,11 +15,13 @@ import {EmptyState} from '@/app/components/EmptyState';
 import {EditUserModal} from '@/app/components/EditUserModal';
 import {User} from '@/lib/types';
 import {DeleteUserButton} from '@/app/components/DeleteUser';
+import {Pagination} from '@/app/components/Pagination';
 
 export const UserTable = () => {
-    const { filteredUsers: users } = useUsersStore();
+    const {filteredUsers: users, currentPage} = useUsersStore();
     const [loading, setLoading] = useState(true);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
+    const pageSize = 10;
 
     useEffect(() => {
         const timer = setTimeout(() => setLoading(false), 500);
@@ -31,6 +33,10 @@ export const UserTable = () => {
             .filter(key => key !== 'id')
             .map(key => key.toUpperCase())
         : [];
+
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    const paginatedUsers = users.slice(startIndex, endIndex);
 
     const baseCellClass = 'px-6 py-2';
     const headerClass = clsx(baseCellClass, 'text-left', 'bg-purple-200', 'font-semibold');
@@ -52,7 +58,7 @@ export const UserTable = () => {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {users.map((user) => (
+                    {paginatedUsers.map((user) => (
                         <TableRow key={user.id} className={rowClass}
                                   onClick={(e) => {
                                       if ((e.target as HTMLElement).closest('button')) return;
@@ -72,9 +78,10 @@ export const UserTable = () => {
                 </TableBody>
                 <TableFooter>
                     <TableRow>
-                        <TableCell colSpan={5} className="text-center text-red-500 text-xl">
-                            Pagination
-                        </TableCell>
+                        <Pagination
+                            totalItems={users.length}
+                            pageSize={pageSize}
+                        />
                     </TableRow>
                 </TableFooter>
             </Table>
